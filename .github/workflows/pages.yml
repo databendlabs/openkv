@@ -1,0 +1,32 @@
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'guide/**'
+      - 'book.toml'
+      - 'README.md'
+jobs:
+  deploy-guide:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install mdbook plugins
+        run: |
+          cargo install mdbook-svgbob
+
+      - name: Install mdbook
+        uses: peaceiris/actions-mdbook@v1
+        with:
+          mdbook-version: '0.4.10'
+
+      - name: Build mdbook
+        run: mdbook build
+
+      - name: Deploy to github page
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./guide/book
