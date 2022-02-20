@@ -2,6 +2,9 @@
 
 LSM based key-value store in rust, design for cloud.
 
+This project is in **Alpha** phase.
+API and data layout will change rapidly.
+
 # Goal
 
 - [ ] Transactional key-value store:
