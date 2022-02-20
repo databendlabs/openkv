@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "openkv",
+]
+exclude = [
+    "example-todo",
+]
