@@ -2,7 +2,7 @@
 
 A SSTable(solid-state table) is the same concept used in levelDB or rocksDB.
 
-The size of an SSTable is `16MB`.
+The size of an SSTable can only be `4MB`(for tombstone only SSTable) or `16MB`(regular SSTable).
 
 The data layout inside an SSTable:
 
@@ -88,20 +88,19 @@ value.
 
 `Records` is indexed by offsets that are stored in `Index`.
 
-`key-suffix` may be empty
-`value` is var-len serialized `bytes`
+- `key-suffix` may be empty.
+- `seq` is a monotonic sequence number.
+- `tombstone` marks a deleted key.
+- `value` is var-len serialized `bytes`.
 
 ```bob
-
-.--------------+---------.
-| "key-suffix" | "value" |
-|--------------+---------|
-| "key-suffix" | "value" |
-|--------------+---------|
-| "..."        | "..."   |
-'--------------+---------'
-
-
+.--------------+-----+-----------+---------.
+| "key-suffix" |"seq"|"tombstone"| "value" |
+|--------------+-----+-----------+---------|
+| "key-suffix" |"seq"|"tombstone"| "value" |
+|--------------+-----+-----------+---------|
+| "..."        |"..."|"..."      | "..."   |
+'--------------+-----+-----------+---------'
 ```
 
 

@@ -15,7 +15,7 @@ jobs:
 
       - name: Install mdbook plugins
         run: |
-          cargo install mdbook-svgbob
+          cargo install mdbook-svgbob mdbook-linkcheck
 
       - name: Install mdbook
         uses: peaceiris/actions-mdbook@v1
@@ -29,4 +29,5 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./doc/book
+          # Because in `book.toml` there are two `output` table thus the output location is changed.
+          publish_dir: ./doc/book/html
