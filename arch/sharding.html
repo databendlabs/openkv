@@ -1,0 +1,223 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Internal Sharding - openkv</title>
+                
+
+        <!-- Custom HTML head -->
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="The openkv document">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+                <link rel="icon" href="../favicon.svg">
+                        <link rel="shortcut icon" href="../favicon.png">
+                <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+                <link rel="stylesheet" href="../css/print.css" media="print">
+        
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="../fonts/fonts.css">
+        
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+                <link rel="stylesheet" href="../doc/src/custom.css">
+        
+            </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../arch/memtable.html"><strong aria-hidden="true">1.</strong> MemTable</a></li><li class="chapter-item expanded "><a href="../arch/sstable.html"><strong aria-hidden="true">2.</strong> SSTable</a></li><li class="chapter-item expanded "><a href="../arch/sharding.html" class="active"><strong aria-hidden="true">3.</strong> Internal Sharding</a></li><li class="chapter-item expanded "><a href="../arch/compaction.html"><strong aria-hidden="true">4.</strong> Compaction</a></li><li class="chapter-item expanded "><a href="../arch/datafile.html"><strong aria-hidden="true">5.</strong> Data File</a></li><li class="chapter-item expanded "><a href="../arch/manifest.html"><strong aria-hidden="true">6.</strong> Manifest</a></li></ol>            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                                            </div>
+
+                    <h1 class="menu-title">openkv</h1>
+
+                    <div class="right-buttons">
+                                                <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                                                                        
+                    </div>
+                </div>
+
+                                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="sharding"><a class="header" href="#sharding">Sharding</a></h1>
+<p>One of the performance issue about LSM tree is the write/read amplification.
+When a db becomes bigger, the number of levels(<code>l</code>) in a LSM becomes increases, in
+logarithm order.</p>
+<p>A record will be rewritten(<a href="compaction.html">compaction</a>) <code>l</code> times to enter the bottom level.
+Assumes the fanout of every level is <code>n</code>,
+every record amplifies write IO by <code>O(l) * n</code> times.</p>
+<p>By splitting LSM into several smaller ones, <code>l</code> becomes smaller and the
+write/read amplification will be reduced.</p>
+<p>Thus openkv organize its data in a way resembles to a two-level BTree:</p>
+<ul>
+<li>The btree root node is a array of all sub-LSM, sorted in key order.</li>
+<li>Each of the leaf nodes is a small LSM.</li>
+</ul>
+<div style='width:100%; height:288px;'><style type="text/css">svg { width: 100% !important; }</style><svg class="bob" font-family="arial" font-size="14" height="288" width="752" xmlns="http://www.w3.org/2000/svg"><defs><marker id="triangle" markerHeight="8" markerWidth="8" orient="auto" refX="4" refY="2" viewBox="0 0 8 4"><polygon class="fg_fill" points="0,0 0,4 8,2 0,0"/></marker><marker id="clear_triangle" markerHeight="10" markerWidth="10" orient="auto" refX="1" refY="7" viewBox="0 0 20 14"><polygon class="bg_fill" points="2,2 2,12 18,7 2,2"/></marker><marker id="circle" markerHeight="5" markerWidth="5" orient="auto" refX="10" refY="10" viewBox="0 0 20 20"><circle class="fg_fill" cx="10" cy="10" r="8"/></marker><marker id="square" markerHeight="5" markerWidth="5" orient="auto" refX="10" refY="10" viewBox="0 0 20 20"><rect class="fg_fill" height="20" width="20" x="0" y="0"/></marker><marker id="open_circle" markerHeight="10" markerWidth="10" orient="auto" refX="10" refY="10" viewBox="0 0 20 20"><circle class="bg_fill" cx="10" cy="10" r="4"/></marker><marker id="big_open_circle" markerHeight="20" markerWidth="20" orient="auto" refX="20" refY="20" viewBox="0 0 40 40"><circle class="bg_fill" cx="20" cy="20" r="6"/></marker></defs><style type="text/css">rect.backdrop {    fill: transparent;}text{    fill: var(--fg);}circle {    fill: none;    stroke: var(--fg);    stroke-width: 2;}line {    stroke: var(--fg);    stroke-width: 2;    stroke-opacity: 1;    fill-opacity: 1;    stroke-linecap: round;    stroke-linejoin: miter;}path {    fill: none;    stroke: var(--fg);    stroke-width: 2;    stroke-opacity: 1;    fill-opacity: 1;    stroke-linecap: round;    stroke-linejoin: miter;}line.dashed {    stroke-dasharray: 5;}.fg_fill {    fill: var(--fg);}.bg_fill {    fill: transparent;    stroke: var(--fg);    stroke-width: 2;}tspan.head{    fill: none;    stroke: none;}    </style><rect class="backdrop" height="288" width="752" x="0" y="0"/><g><line x1="12" x2="12" y1="252" y2="276"/><path d="M 12 276 A 4 4 0 0 0 16 280"/><path d="M 16 248 A 4 4 0 0 0 12 252"/></g><g><line x1="16" x2="64" y1="248" y2="248"/><path d="M 68 252 A 4 4 0 0 0 64 248"/></g><g><line x1="16" x2="64" y1="280" y2="280"/><path d="M 64 280 A 4 4 0 0 0 68 276"/></g><g><line x1="60" x2="60" y1="204" y2="228"/><path d="M 60 228 A 4 4 0 0 0 64 232"/><path d="M 64 200 A 4 4 0 0 0 60 204"/></g><g><line x1="64" x2="112" y1="200" y2="200"/><path d="M 116 204 A 4 4 0 0 0 112 200"/></g><g><line x1="64" x2="112" y1="232" y2="232"/><path d="M 112 232 A 4 4 0 0 0 116 228"/></g><g><line x1="68" x2="68" y1="252" y2="276"/></g><g><line x1="108" x2="108" y1="108" y2="132"/><path d="M 108 132 A 4 4 0 0 0 112 136"/><path d="M 112 104 A 4 4 0 0 0 108 108"/></g><g><line x1="108" x2="108" y1="156" y2="180"/><path d="M 108 180 A 4 4 0 0 0 112 184"/><path d="M 112 152 A 4 4 0 0 0 108 156"/></g><g><line x1="108" x2="108" y1="252" y2="276"/><path d="M 108 276 A 4 4 0 0 0 112 280"/><path d="M 112 248 A 4 4 0 0 0 108 252"/></g><g><line x1="112" x2="160" y1="104" y2="104"/><path d="M 164 108 A 4 4 0 0 0 160 104"/></g><g><line x1="112" x2="160" y1="136" y2="136"/><path d="M 160 136 A 4 4 0 0 0 164 132"/></g><g><line x1="112" x2="160" y1="152" y2="152"/><path d="M 164 156 A 4 4 0 0 0 160 152"/></g><g><line x1="112" x2="160" y1="184" y2="184"/><path d="M 160 184 A 4 4 0 0 0 164 180"/></g><g><line x1="112" x2="160" y1="248" y2="248"/><path d="M 164 252 A 4 4 0 0 0 160 248"/></g><g><line x1="112" x2="160" y1="280" y2="280"/><path d="M 160 280 A 4 4 0 0 0 164 276"/></g><g><line x1="116" x2="116" y1="204" y2="228"/></g><g><line x1="156" x2="156" y1="204" y2="228"/><path d="M 156 228 A 4 4 0 0 0 160 232"/><path d="M 160 200 A 4 4 0 0 0 156 204"/></g><g><line x1="160" x2="208" y1="200" y2="200"/><path d="M 212 204 A 4 4 0 0 0 208 200"/></g><g><line x1="160" x2="208" y1="232" y2="232"/><path d="M 208 232 A 4 4 0 0 0 212 228"/></g><g><line x1="164" x2="164" y1="108" y2="132"/></g><g><line x1="164" x2="164" y1="156" y2="180"/></g><g><line x1="164" x2="164" y1="252" y2="276"/></g><g><line x1="204" x2="204" y1="252" y2="276"/><path d="M 204 276 A 4 4 0 0 0 208 280"/><path d="M 208 248 A 4 4 0 0 0 204 252"/></g><g><line x1="208" x2="256" y1="248" y2="248"/><path d="M 260 252 A 4 4 0 0 0 256 248"/></g><g><line x1="208" x2="256" y1="280" y2="280"/><path d="M 256 280 A 4 4 0 0 0 260 276"/></g><g><line x1="212" x2="212" y1="204" y2="228"/></g><g><line x1="260" x2="260" y1="252" y2="276"/></g><g><line marker-end="url(#triangle)" x1="280" x2="332" y1="184" y2="184"/></g><g><line x1="372" x2="372" y1="252" y2="276"/><path d="M 372 276 A 4 4 0 0 0 376 280"/><path d="M 376 248 A 4 4 0 0 0 372 252"/></g><g><line x1="376" x2="424" y1="248" y2="248"/><path d="M 428 252 A 4 4 0 0 0 424 248"/></g><g><line x1="376" x2="424" y1="280" y2="280"/><path d="M 424 280 A 4 4 0 0 0 428 276"/></g><g><line x1="404" x2="404" y1="44" y2="68"/><path d="M 404 68 A 4 4 0 0 0 408 72"/><path d="M 408 40 A 4 4 0 0 0 404 44"/></g><g><line x1="408" x2="508" y1="40" y2="40"/><line x1="508" x2="508" y1="40" y2="72"/><line x1="508" x2="596" y1="40" y2="40"/><line x1="508" x2="596" y1="72" y2="72"/><line x1="596" x2="596" y1="40" y2="72"/><line x1="596" x2="696" y1="40" y2="40"/><line x1="596" x2="696" y1="72" y2="72"/><path d="M 696 72 A 4 4 0 0 0 700 68"/><path d="M 700 44 A 4 4 0 0 0 696 40"/></g><g><line x1="408" x2="508" y1="72" y2="72"/></g><g><line x1="420" x2="420" y1="156" y2="180"/><path d="M 420 180 A 4 4 0 0 0 424 184"/><path d="M 424 152 A 4 4 0 0 0 420 156"/></g><g><line x1="420" x2="420" y1="204" y2="228"/><path d="M 420 228 A 4 4 0 0 0 424 232"/><path d="M 424 200 A 4 4 0 0 0 420 204"/></g><g><line x1="424" x2="472" y1="152" y2="152"/><path d="M 476 156 A 4 4 0 0 0 472 152"/></g><g><line x1="424" x2="472" y1="184" y2="184"/><path d="M 472 184 A 4 4 0 0 0 476 180"/></g><g><line x1="424" x2="472" y1="200" y2="200"/><path d="M 476 204 A 4 4 0 0 0 472 200"/></g><g><line x1="424" x2="472" y1="232" y2="232"/><path d="M 472 232 A 4 4 0 0 0 476 228"/></g><g><line x1="428" x2="428" y1="252" y2="276"/></g><g><line marker-end="url(#triangle)" x1="444" x2="444" y1="80" y2="140"/></g><g><line x1="468" x2="468" y1="252" y2="276"/><path d="M 468 276 A 4 4 0 0 0 472 280"/><path d="M 472 248 A 4 4 0 0 0 468 252"/></g><g><line x1="472" x2="520" y1="248" y2="248"/><path d="M 524 252 A 4 4 0 0 0 520 248"/></g><g><line x1="472" x2="520" y1="280" y2="280"/><path d="M 520 280 A 4 4 0 0 0 524 276"/></g><g><line x1="476" x2="476" y1="156" y2="180"/></g><g><line x1="476" x2="476" y1="204" y2="228"/></g><g><line x1="524" x2="524" y1="252" y2="276"/></g><g><line x1="548" x2="548" y1="80" y2="100"/><path d="M 548 100 A 4 4 0 0 0 552 104"/></g><g><line x1="552" x2="632" y1="104" y2="104"/><path d="M 636 108 A 4 4 0 0 0 632 104"/></g><g><line x1="564" x2="564" y1="252" y2="276"/><path d="M 564 276 A 4 4 0 0 0 568 280"/><path d="M 568 248 A 4 4 0 0 0 564 252"/></g><g><line x1="568" x2="616" y1="248" y2="248"/><path d="M 620 252 A 4 4 0 0 0 616 248"/></g><g><line x1="568" x2="616" y1="280" y2="280"/><path d="M 616 280 A 4 4 0 0 0 620 276"/></g><g><line x1="612" x2="612" y1="156" y2="180"/><path d="M 612 180 A 4 4 0 0 0 616 184"/><path d="M 616 152 A 4 4 0 0 0 612 156"/></g><g><line x1="612" x2="612" y1="204" y2="228"/><path d="M 612 228 A 4 4 0 0 0 616 232"/><path d="M 616 200 A 4 4 0 0 0 612 204"/></g><g><line x1="616" x2="664" y1="152" y2="152"/><path d="M 668 156 A 4 4 0 0 0 664 152"/></g><g><line x1="616" x2="664" y1="184" y2="184"/><path d="M 664 184 A 4 4 0 0 0 668 180"/></g><g><line x1="616" x2="664" y1="200" y2="200"/><path d="M 668 204 A 4 4 0 0 0 664 200"/></g><g><line x1="616" x2="664" y1="232" y2="232"/><path d="M 664 232 A 4 4 0 0 0 668 228"/></g><g><line x1="620" x2="620" y1="252" y2="276"/></g><g><line marker-end="url(#triangle)" x1="636" x2="636" y1="108" y2="140"/></g><g><line x1="656" x2="728" y1="88" y2="88"/><line class="dashed" x1="728" x2="752" y1="88" y2="88"/><path d="M 652 84 A 4 4 0 0 0 656 88"/></g><g><line x1="660" x2="660" y1="252" y2="276"/><path d="M 660 276 A 4 4 0 0 0 664 280"/><path d="M 664 248 A 4 4 0 0 0 660 252"/></g><g><line x1="664" x2="712" y1="248" y2="248"/><path d="M 716 252 A 4 4 0 0 0 712 248"/></g><g><line x1="664" x2="712" y1="280" y2="280"/><path d="M 712 280 A 4 4 0 0 0 716 276"/></g><g><line x1="668" x2="668" y1="156" y2="180"/></g><g><line x1="668" x2="668" y1="204" y2="228"/></g><g><line x1="700" x2="700" y1="44" y2="68"/></g><g><line x1="716" x2="716" y1="252" y2="276"/></g><g><text x="25" y="268">L0</text></g><g><text x="73" y="220">L1</text></g><g><text x="121" y="124">L3</text></g><g><text x="121" y="172">L2</text></g><g><text x="121" y="268">L0</text></g><g><text x="169" y="220">L1</text></g><g><text x="217" y="268">L0</text></g><g><text x="385" y="268">L0</text></g><g><text x="417" y="60">(-oo, b]</text></g><g><text x="433" y="172">L2</text></g><g><text x="433" y="220">L1</text></g><g><text x="481" y="268">L0</text></g><g><text x="521" y="60">[b, e)</text></g><g><text x="577" y="268">L0</text></g><g><text x="609" y="60">[e, +oo)</text></g><g><text x="625" y="172">L2</text></g><g><text x="625" y="220">L1</text></g><g><text x="673" y="268">L0</text></g></svg></div>
+<h2 id="sub-lsm"><a class="header" href="#sub-lsm">Sub-LSM</a></h2>
+<p>Sub-LSM is a small LSM tree, with a limited number of levels.</p>
+<h1 id="split-and-merge"><a class="header" href="#split-and-merge">Split and Merge</a></h1>
+<ul>
+<li>
+<p>A sub-LSM will be split if the level exceeds a threshold(e.g., 3).</p>
+</li>
+<li>
+<p>Two adjacent sub-LSM is merged into one if both of them becomes lower than 1/3 of the threshold.</p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                                                    <a rel="prev" href="../arch/sstable.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+                                                    <a rel="next" href="../arch/compaction.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                                    <a rel="prev" href="../arch/sstable.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+                                    <a rel="next" href="../arch/compaction.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                            </nav>
+
+        </div>
+
+        
+        
+        
+                <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+        
+                <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        
+    </body>
+</html>
