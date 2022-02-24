@@ -149,7 +149,8 @@
 <p>It can be considered as a <code>BTreeMap</code>.</p>
 <p>There is only one active <code>MemTable</code> for every openkv instance.
 Memtable is shared by all <a href="sharding.html#sub-lsm">sub-LSM</a></p>
-<h1 id="flush-memtable-to-sstable"><a class="header" href="#flush-memtable-to-sstable">Flush MemTable to SSTable</a></h1>
+<h1 id="flush"><a class="header" href="#flush">Flush</a></h1>
+<p>Flush MemTable to SSTable.</p>
 <p>If the MemTable becomes too large, flush one continous portion(span) into a
 sub-LSM.</p>
 <p>MemTable always flushes the biggest span, e.g., the one with most keys, unless

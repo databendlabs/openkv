@@ -145,6 +145,33 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="manifest"><a class="header" href="#manifest">Manifest</a></h1>
+<p>Manifest in openkv itself is a tiny db with WAL of operations to the system and a snapshot.</p>
+<p>Snapshot:</p>
+<pre><code>version
+
+data_file_bitmaps: {
+    &quot;4mb&quot;:  Bitmap
+    &quot;16mb&quot;: Bitmap
+}
+
+spans: [
+{
+    start: String
+    end: String
+    vsst: {
+        0: [VS1, VS2, ...]
+        1: [VSi, VSj, ...], 
+
+    }
+
+}
+
+]
+    
+
+
+
+</code></pre>
 
                     </main>
 
