@@ -15,7 +15,12 @@ jobs:
 
       - name: Install mdbook plugins
         run: |
-          cargo install mdbook-svgbob mdbook-linkcheck
+          cargo install mdbook-linkcheck
+          cargo install --git "https://github.com/lzanini/mdbook-katex"
+          # Fixed version:
+          # 29c3ff1 Fix: the parser has to parse table or the table will be escaped when output
+          cargo install --git "https://github.com/drmingdrmer/mdbook-svgbob"
+
 
       - name: Install mdbook
         uses: peaceiris/actions-mdbook@v1

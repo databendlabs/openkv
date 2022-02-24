@@ -21,15 +21,25 @@ stroke_color = "var(--fg)" # see default theme / variables.css
 background_color = "transparent" # also useful `var(--bg)`
 # all properties are optional.
 
+[preprocessor.katex]
+
+# required by preprocessor.katex
+# https://github.com/lzanini/mdbook-katex
+[output.katex]
+
+# Output intermedia md for debug only
+[output.markdown]
 
 [output.html]
 additional-css = ["doc/src/custom.css"]
+# mathjax-support = true
 
 
 [output.linkcheck]
 # Should we check links on the internet? Enabling this option adds a
 # non-negligible performance impact
-follow-web-links = true
+# TODO: enable this
+# follow-web-links = true
 
 # Are we allowed to link to files outside of the book's root directory? This
 # may help prevent linking to sensitive files (e.g. "../../../../etc/shadow")
