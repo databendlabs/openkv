@@ -90,17 +90,16 @@ value.
 
 - `key-suffix` may be empty.
 - `seq` is a monotonic sequence number.
-- `tombstone` marks a deleted key.
 - `value` is var-len serialized `bytes`.
 
 ```bob
-.--------------+-----+-----------+---------.
-| "key-suffix" |"seq"|"tombstone"| "value" |
-|--------------+-----+-----------+---------|
-| "key-suffix" |"seq"|"tombstone"| "value" |
-|--------------+-----+-----------+---------|
-| "..."        |"..."|"..."      | "..."   |
-'--------------+-----+-----------+---------'
+.--------------+-----+---------.
+| "key-suffix" |"seq"| "value" |
+|--------------+-----+---------|
+| "key-suffix" |"seq"| "value" |
+|--------------+-----+---------|
+| "..."        |"..."| "..."   |
+'--------------+-----+---------'
 ```
 
 
@@ -108,6 +107,60 @@ value.
 ## Checksum
 
 SHA256 of all preceding bytes in the SSTable.
+
+
+# Positive and Negative SSTable
+
+One [flush][] builds 2 SSTable:
+- One of them contains all inserted or updated records, the Positive SSTable.
+- The other one contains only deleted records, i.e., tomobstones: the Negative SSTable.
+
+Both has the same **level** and the same key **range**.
+In other word, we store updated recoreds and deleted records separately.
+
+```bob
+"Records part in P-SSTable:"
+
+.--------------+-----+---------.
+| "key-suffix" |"seq"| "value" |
+|--------------+-----+---------|
+| "key-suffix" |"seq"| "value" |
+|--------------+-----+---------|
+| "..."        |"..."| "..."   |
+'--------------+-----+---------'
+
+"Records part in N-SSTable:"
+
+.--------------+-----.
+| "key-suffix" |"seq"|
+|--------------+-----|
+| "key-suffix" |"seq"|
+|--------------+-----|
+| "..."        |"..."|
+'--------------+-----'
+```
+
+By separating P/N records,
+it is possible to compact a N-SSTable down to reclaim space quickly.
+
+E.g., a Negative SSTable `N1` can be pushed down and be merged with `N2` and `N3`,
+without touching `P1`. Because to `N1`, `P1` is **transparent**: `N1 ∩ P1 = ø`
+
+```bob
+            .------.
+  .---------+ "N1" +---------.
+  |         '------'         |
+  |         .------.         |
+  |         | "P1" |         |
+  |         '------'         |
+  |                          |
+  |   .------.    .------.   |
+  +-->| "N2" |    | "N3" |<--+
+      '------'    '------'
+      .------.    .------.
+      | "P2" |    | "P3" |
+      '------'    '------'
+```
 
 
 # Reading a record
@@ -131,4 +184,6 @@ SHA256 of all preceding bytes in the SSTable.
 
 - Trie is not cache friendly thus a single trie should not be very large.
     The expected time cost for a query in the `Index` is less than 200 ns.
-    
+
+
+[flush]: memtable.md#flush
