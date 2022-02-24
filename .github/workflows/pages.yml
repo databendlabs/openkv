@@ -25,10 +25,12 @@ jobs:
       - name: Install mdbook
         uses: peaceiris/actions-mdbook@v1
         with:
-          mdbook-version: '0.4.10'
+          mdbook-version: '0.4.15'
 
       - name: Build mdbook
         run: mdbook build
+        env:
+          RUST_LOG: debug
 
       - name: Deploy to github page
         uses: peaceiris/actions-gh-pages@v3
