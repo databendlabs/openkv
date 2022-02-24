@@ -422,7 +422,7 @@ This bitmap has to be indexed to speed up searching for the first <code>0</code>
 <h1 id="manifest"><a class="header" href="#manifest">Manifest</a></h1>
 <p>Manifest in openkv itself is a tiny db with WAL of operations to the system and a snapshot.</p>
 <p>Snapshot:</p>
-<pre><code>version
+<pre><code>version: String
 
 data_file_bitmaps: {
     &quot;4mb&quot;:  Bitmap
@@ -430,21 +430,30 @@ data_file_bitmaps: {
 }
 
 spans: [
-{
-    start: String
-    end: String
-    vsst: {
-        0: [VS1, VS2, ...]
-        1: [VSi, VSj, ...], 
+    {
+        start: String
+        end: String
+        vsstables: {
+            0: [VSST1, VSST2, ...]
+            1: [VSSTi, VSSTj, ...],
+        }
+    },
+    ...
+]
 
-    }
+separated_values: [
+    {
+        start_value_id: String,
+        end_value_id: String
+        vsstables: {
+            0: [VSST1, VSST2, ...]
+            1: [VSSTi, VSSTj, ...],
+        }
 
-}
+    },
+    ...
 
 ]
-    
-
-
 
 </code></pre>
 
