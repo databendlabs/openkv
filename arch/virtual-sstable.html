@@ -1,0 +1,191 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Virtual SSTable - openkv</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="The openkv document">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../doc/src/custom.css">
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../arch/memtable.html"><strong aria-hidden="true">1.</strong> MemTable</a></li><li class="chapter-item expanded "><a href="../arch/sstable.html"><strong aria-hidden="true">2.</strong> SSTable</a></li><li class="chapter-item expanded "><a href="../arch/virtual-sstable.html" class="active"><strong aria-hidden="true">3.</strong> Virtual SSTable</a></li><li class="chapter-item expanded "><a href="../arch/separate-value.html"><strong aria-hidden="true">4.</strong> Separate Value</a></li><li class="chapter-item expanded "><a href="../arch/sharding.html"><strong aria-hidden="true">5.</strong> Internal Sharding</a></li><li class="chapter-item expanded "><a href="../arch/compaction.html"><strong aria-hidden="true">6.</strong> Compaction</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../arch/min-hash.html"><strong aria-hidden="true">6.1.</strong> min-hash</a></li></ol></li><li class="chapter-item expanded "><a href="../arch/datafile.html"><strong aria-hidden="true">7.</strong> Data File</a></li><li class="chapter-item expanded "><a href="../arch/manifest.html"><strong aria-hidden="true">8.</strong> Manifest</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">openkv</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<h1 id="virtual-sstable"><a class="header" href="#virtual-sstable">Virtual SSTable</a></h1>
+<p><code>VSSTable</code> is a unit to manage SSTable.
+Because an SSTable may be referenced more than once:
+e.g. when splitting a span.</p>
+<div style='width:100%; height:304px;'><style type="text/css">svg { width: 100% !important; }</style><svg class="bob" font-family="arial" font-size="14" height="304" width="728" xmlns="http://www.w3.org/2000/svg"><defs><marker id="triangle" markerHeight="8" markerWidth="8" orient="auto" refX="4" refY="2" viewBox="0 0 8 4"><polygon class="fg_fill" points="0,0 0,4 8,2 0,0"/></marker><marker id="clear_triangle" markerHeight="10" markerWidth="10" orient="auto" refX="1" refY="7" viewBox="0 0 20 14"><polygon class="bg_fill" points="2,2 2,12 18,7 2,2"/></marker><marker id="circle" markerHeight="5" markerWidth="5" orient="auto" refX="10" refY="10" viewBox="0 0 20 20"><circle class="fg_fill" cx="10" cy="10" r="8"/></marker><marker id="square" markerHeight="5" markerWidth="5" orient="auto" refX="10" refY="10" viewBox="0 0 20 20"><rect class="fg_fill" height="20" width="20" x="0" y="0"/></marker><marker id="open_circle" markerHeight="10" markerWidth="10" orient="auto" refX="10" refY="10" viewBox="0 0 20 20"><circle class="bg_fill" cx="10" cy="10" r="4"/></marker><marker id="big_open_circle" markerHeight="20" markerWidth="20" orient="auto" refX="20" refY="20" viewBox="0 0 40 40"><circle class="bg_fill" cx="20" cy="20" r="6"/></marker></defs><style type="text/css">rect.backdrop {    fill: transparent;}text{    fill: var(--fg);}circle {    fill: none;    stroke: var(--fg);    stroke-width: 2;}line {    stroke: var(--fg);    stroke-width: 2;    stroke-opacity: 1;    fill-opacity: 1;    stroke-linecap: round;    stroke-linejoin: miter;}path {    fill: none;    stroke: var(--fg);    stroke-width: 2;    stroke-opacity: 1;    fill-opacity: 1;    stroke-linecap: round;    stroke-linejoin: miter;}line.dashed {    stroke-dasharray: 5;}.fg_fill {    fill: var(--fg);}.bg_fill {    fill: transparent;    stroke: var(--fg);    stroke-width: 2;}tspan.head{    fill: none;    stroke: none;}    </style><rect class="backdrop" height="304" width="728" x="0" y="0"/><g><line x1="12" x2="12" y1="76" y2="80"/><line class="dashed" x1="12" x2="12" y1="80" y2="96"/><path d="M 16 72 A 4 4 0 0 0 12 76"/></g><g><line x1="12" x2="12" y1="100" y2="96"/><path d="M 12 100 A 4 4 0 0 0 16 104"/></g><g><line x1="12" x2="12" y1="268" y2="292"/><path d="M 12 292 A 4 4 0 0 0 16 296"/><path d="M 16 264 A 4 4 0 0 0 12 268"/></g><g><line x1="16" x2="64" y1="264" y2="264"/><path d="M 68 268 A 4 4 0 0 0 64 264"/></g><g><line x1="16" x2="64" y1="296" y2="296"/><path d="M 64 296 A 4 4 0 0 0 68 292"/></g><g><line x1="36" x2="32" y1="104" y2="104"/><line marker-end="url(#triangle)" x1="36" x2="36" y1="104" y2="252"/><line x1="36" x2="40" y1="104" y2="104"/><line class="dashed" x1="16" x2="32" y1="104" y2="104"/><line class="dashed" x1="40" x2="64" y1="104" y2="104"/><path d="M 64 104 A 4 4 0 0 0 68 100"/></g><g><line x1="60" x2="60" y1="28" y2="32"/><line class="dashed" x1="60" x2="60" y1="32" y2="48"/><path d="M 64 24 A 4 4 0 0 0 60 28"/></g><g><line x1="60" x2="60" y1="52" y2="48"/><path d="M 60 52 A 4 4 0 0 0 64 56"/></g><g><line x1="60" x2="60" y1="220" y2="244"/><path d="M 60 244 A 4 4 0 0 0 64 248"/><path d="M 64 216 A 4 4 0 0 0 60 220"/></g><g><line x1="64" x2="112" y1="216" y2="216"/><path d="M 116 220 A 4 4 0 0 0 112 216"/></g><g><line x1="64" x2="112" y1="248" y2="248"/><path d="M 112 248 A 4 4 0 0 0 116 244"/></g><g><line x1="68" x2="68" y1="76" y2="80"/><line class="dashed" x1="68" x2="68" y1="80" y2="96"/><path d="M 68 76 A 4 4 0 0 0 64 72"/></g><g><line x1="68" x2="68" y1="100" y2="96"/></g><g><line x1="68" x2="68" y1="268" y2="292"/></g><g><line x1="84" x2="80" y1="56" y2="56"/><line marker-end="url(#triangle)" x1="84" x2="84" y1="56" y2="204"/><line x1="84" x2="88" y1="56" y2="56"/><line class="dashed" x1="64" x2="80" y1="56" y2="56"/><line class="dashed" x1="88" x2="112" y1="56" y2="56"/><path d="M 112 56 A 4 4 0 0 0 116 52"/></g><g><line x1="108" x2="108" y1="76" y2="80"/><line class="dashed" x1="108" x2="108" y1="80" y2="96"/><path d="M 112 72 A 4 4 0 0 0 108 76"/></g><g><line x1="108" x2="108" y1="100" y2="96"/><path d="M 108 100 A 4 4 0 0 0 112 104"/></g><g><line x1="108" x2="108" y1="268" y2="292"/><path d="M 108 292 A 4 4 0 0 0 112 296"/><path d="M 112 264 A 4 4 0 0 0 108 268"/></g><g><line x1="112" x2="160" y1="264" y2="264"/><path d="M 164 268 A 4 4 0 0 0 160 264"/></g><g><line x1="112" x2="160" y1="296" y2="296"/><path d="M 160 296 A 4 4 0 0 0 164 292"/></g><g><line x1="116" x2="116" y1="28" y2="32"/><line class="dashed" x1="116" x2="116" y1="32" y2="48"/><path d="M 116 28 A 4 4 0 0 0 112 24"/></g><g><line x1="116" x2="116" y1="52" y2="48"/></g><g><line x1="116" x2="116" y1="220" y2="244"/></g><g><line x1="132" x2="128" y1="104" y2="104"/><line marker-end="url(#triangle)" x1="132" x2="132" y1="104" y2="252"/><line x1="132" x2="136" y1="104" y2="104"/><line class="dashed" x1="112" x2="128" y1="104" y2="104"/><line class="dashed" x1="136" x2="160" y1="104" y2="104"/><path d="M 160 104 A 4 4 0 0 0 164 100"/></g><g><line x1="156" x2="156" y1="28" y2="32"/><line class="dashed" x1="156" x2="156" y1="32" y2="48"/><path d="M 160 24 A 4 4 0 0 0 156 28"/></g><g><line x1="156" x2="156" y1="52" y2="48"/><path d="M 156 52 A 4 4 0 0 0 160 56"/></g><g><line x1="156" x2="156" y1="220" y2="244"/><path d="M 156 244 A 4 4 0 0 0 160 248"/><path d="M 160 216 A 4 4 0 0 0 156 220"/></g><g><line x1="160" x2="208" y1="216" y2="216"/><path d="M 212 220 A 4 4 0 0 0 208 216"/></g><g><line x1="160" x2="208" y1="248" y2="248"/><path d="M 208 248 A 4 4 0 0 0 212 244"/></g><g><line x1="164" x2="164" y1="76" y2="80"/><line class="dashed" x1="164" x2="164" y1="80" y2="96"/><path d="M 164 76 A 4 4 0 0 0 160 72"/></g><g><line x1="164" x2="164" y1="100" y2="96"/></g><g><line x1="164" x2="164" y1="268" y2="292"/></g><g><line x1="180" x2="176" y1="56" y2="56"/><line marker-end="url(#triangle)" x1="180" x2="180" y1="56" y2="204"/><line x1="180" x2="184" y1="56" y2="56"/><line class="dashed" x1="160" x2="176" y1="56" y2="56"/><line class="dashed" x1="184" x2="208" y1="56" y2="56"/><path d="M 208 56 A 4 4 0 0 0 212 52"/></g><g><line x1="204" x2="204" y1="76" y2="80"/><line class="dashed" x1="204" x2="204" y1="80" y2="96"/><path d="M 208 72 A 4 4 0 0 0 204 76"/></g><g><line x1="204" x2="204" y1="100" y2="96"/><path d="M 204 100 A 4 4 0 0 0 208 104"/></g><g><line x1="204" x2="204" y1="268" y2="292"/><path d="M 204 292 A 4 4 0 0 0 208 296"/><path d="M 208 264 A 4 4 0 0 0 204 268"/></g><g><line x1="208" x2="256" y1="264" y2="264"/><path d="M 260 268 A 4 4 0 0 0 256 264"/></g><g><line x1="208" x2="256" y1="296" y2="296"/><path d="M 256 296 A 4 4 0 0 0 260 292"/></g><g><line x1="212" x2="212" y1="28" y2="32"/><line class="dashed" x1="212" x2="212" y1="32" y2="48"/><path d="M 212 28 A 4 4 0 0 0 208 24"/></g><g><line x1="212" x2="212" y1="52" y2="48"/></g><g><line x1="212" x2="212" y1="220" y2="244"/></g><g><line x1="228" x2="224" y1="104" y2="104"/><line marker-end="url(#triangle)" x1="228" x2="228" y1="104" y2="252"/><line x1="228" x2="232" y1="104" y2="104"/><line class="dashed" x1="208" x2="224" y1="104" y2="104"/><line class="dashed" x1="232" x2="256" y1="104" y2="104"/><path d="M 256 104 A 4 4 0 0 0 260 100"/></g><g><line x1="260" x2="260" y1="76" y2="80"/><line class="dashed" x1="260" x2="260" y1="80" y2="96"/><path d="M 260 76 A 4 4 0 0 0 256 72"/></g><g><line x1="260" x2="260" y1="100" y2="96"/></g><g><line x1="260" x2="260" y1="268" y2="292"/></g><g><line marker-end="url(#triangle)" x1="280" x2="348" y1="88" y2="88"/></g><g><line x1="372" x2="372" y1="76" y2="80"/><line class="dashed" x1="372" x2="372" y1="80" y2="96"/><path d="M 376 72 A 4 4 0 0 0 372 76"/></g><g><line x1="372" x2="372" y1="100" y2="96"/><path d="M 372 100 A 4 4 0 0 0 376 104"/></g><g><line x1="372" x2="372" y1="268" y2="292"/><path d="M 372 292 A 4 4 0 0 0 376 296"/><path d="M 376 264 A 4 4 0 0 0 372 268"/></g><g><line x1="376" x2="424" y1="264" y2="264"/><path d="M 428 268 A 4 4 0 0 0 424 264"/></g><g><line x1="376" x2="424" y1="296" y2="296"/><path d="M 424 296 A 4 4 0 0 0 428 292"/></g><g><line x1="396" x2="392" y1="104" y2="104"/><line marker-end="url(#triangle)" x1="396" x2="396" y1="104" y2="252"/><line x1="396" x2="400" y1="104" y2="104"/><line class="dashed" x1="376" x2="392" y1="104" y2="104"/><line class="dashed" x1="400" x2="424" y1="104" y2="104"/><path d="M 424 104 A 4 4 0 0 0 428 100"/></g><g><line x1="420" x2="420" y1="28" y2="32"/><line class="dashed" x1="420" x2="420" y1="32" y2="48"/><path d="M 424 24 A 4 4 0 0 0 420 28"/></g><g><line x1="420" x2="420" y1="52" y2="48"/><path d="M 420 52 A 4 4 0 0 0 424 56"/></g><g><line x1="420" x2="420" y1="220" y2="244"/><path d="M 420 244 A 4 4 0 0 0 424 248"/><path d="M 424 216 A 4 4 0 0 0 420 220"/></g><g><line x1="424" x2="472" y1="216" y2="216"/><path d="M 476 220 A 4 4 0 0 0 472 216"/></g><g><line x1="424" x2="472" y1="248" y2="248"/><path d="M 472 248 A 4 4 0 0 0 476 244"/></g><g><line x1="428" x2="428" y1="76" y2="80"/><line class="dashed" x1="428" x2="428" y1="80" y2="96"/><path d="M 428 76 A 4 4 0 0 0 424 72"/></g><g><line x1="428" x2="428" y1="100" y2="96"/></g><g><line x1="428" x2="428" y1="268" y2="292"/></g><g><line x1="444" x2="440" y1="56" y2="56"/><line marker-end="url(#triangle)" x1="444" x2="444" y1="56" y2="204"/><line x1="444" x2="448" y1="56" y2="56"/><line class="dashed" x1="424" x2="440" y1="56" y2="56"/><line class="dashed" x1="448" x2="472" y1="56" y2="56"/><path d="M 472 56 A 4 4 0 0 0 476 52"/></g><g><line x1="468" x2="468" y1="76" y2="80"/><line class="dashed" x1="468" x2="468" y1="80" y2="96"/><path d="M 472 72 A 4 4 0 0 0 468 76"/></g><g><line x1="468" x2="468" y1="100" y2="96"/><path d="M 468 100 A 4 4 0 0 0 472 104"/></g><g><line x1="476" x2="476" y1="28" y2="32"/><line class="dashed" x1="476" x2="476" y1="32" y2="48"/><path d="M 476 28 A 4 4 0 0 0 472 24"/></g><g><line x1="476" x2="476" y1="52" y2="48"/></g><g><line x1="476" x2="476" y1="220" y2="244"/></g><g><line x1="500" x2="500" y1="112" y2="212"/><path d="M 500 212 A 4 4 0 0 0 504 216"/></g><g><line x1="504" x2="528" y1="216" y2="216"/><path d="M 532 220 A 4 4 0 0 0 528 216"/></g><g><line x1="524" x2="524" y1="76" y2="80"/><line class="dashed" x1="524" x2="524" y1="80" y2="96"/><path d="M 524 76 A 4 4 0 0 0 520 72"/></g><g><line x1="524" x2="524" y1="100" y2="96"/><path d="M 520 104 A 4 4 0 0 0 524 100"/></g><g><line x1="524" x2="524" y1="268" y2="292"/><path d="M 524 292 A 4 4 0 0 0 528 296"/><path d="M 528 264 A 4 4 0 0 0 524 268"/></g><g><line x1="528" x2="576" y1="264" y2="264"/><path d="M 580 268 A 4 4 0 0 0 576 264"/></g><g><line x1="528" x2="576" y1="296" y2="296"/><path d="M 576 296 A 4 4 0 0 0 580 292"/></g><g><line marker-end="url(#triangle)" x1="532" x2="532" y1="220" y2="252"/></g><g><line x1="548" x2="548" y1="16" y2="208"/></g><g><line marker-end="url(#triangle)" x1="564" x2="564" y1="220" y2="252"/><path d="M 568 216 A 4 4 0 0 0 564 220"/></g><g><line x1="568" x2="592" y1="216" y2="216"/><path d="M 592 216 A 4 4 0 0 0 596 212"/></g><g><line x1="572" x2="572" y1="76" y2="80"/><line class="dashed" x1="572" x2="572" y1="80" y2="96"/><path d="M 576 72 A 4 4 0 0 0 572 76"/></g><g><line x1="572" x2="572" y1="100" y2="96"/><path d="M 572 100 A 4 4 0 0 0 576 104"/></g><g><line x1="580" x2="580" y1="268" y2="292"/></g><g><line x1="596" x2="596" y1="112" y2="212"/></g><g><line x1="620" x2="620" y1="28" y2="32"/><line class="dashed" x1="620" x2="620" y1="32" y2="48"/><path d="M 624 24 A 4 4 0 0 0 620 28"/></g><g><line x1="620" x2="620" y1="52" y2="48"/><path d="M 620 52 A 4 4 0 0 0 624 56"/></g><g><line x1="620" x2="620" y1="220" y2="244"/><path d="M 620 244 A 4 4 0 0 0 624 248"/><path d="M 624 216 A 4 4 0 0 0 620 220"/></g><g><line x1="624" x2="672" y1="216" y2="216"/><path d="M 676 220 A 4 4 0 0 0 672 216"/></g><g><line x1="624" x2="672" y1="248" y2="248"/><path d="M 672 248 A 4 4 0 0 0 676 244"/></g><g><line x1="628" x2="628" y1="76" y2="80"/><line class="dashed" x1="628" x2="628" y1="80" y2="96"/><path d="M 628 76 A 4 4 0 0 0 624 72"/></g><g><line x1="628" x2="628" y1="100" y2="96"/><path d="M 624 104 A 4 4 0 0 0 628 100"/></g><g><line x1="644" x2="640" y1="56" y2="56"/><line marker-end="url(#triangle)" x1="644" x2="644" y1="56" y2="204"/><line x1="644" x2="648" y1="56" y2="56"/><line class="dashed" x1="624" x2="640" y1="56" y2="56"/><line class="dashed" x1="648" x2="672" y1="56" y2="56"/><path d="M 672 56 A 4 4 0 0 0 676 52"/></g><g><line x1="668" x2="668" y1="76" y2="80"/><line class="dashed" x1="668" x2="668" y1="80" y2="96"/><path d="M 672 72 A 4 4 0 0 0 668 76"/></g><g><line x1="668" x2="668" y1="100" y2="96"/><path d="M 668 100 A 4 4 0 0 0 672 104"/></g><g><line x1="668" x2="668" y1="268" y2="292"/><path d="M 668 292 A 4 4 0 0 0 672 296"/><path d="M 672 264 A 4 4 0 0 0 668 268"/></g><g><line x1="672" x2="720" y1="264" y2="264"/><path d="M 724 268 A 4 4 0 0 0 720 264"/></g><g><line x1="672" x2="720" y1="296" y2="296"/><path d="M 720 296 A 4 4 0 0 0 724 292"/></g><g><line x1="676" x2="676" y1="28" y2="32"/><line class="dashed" x1="676" x2="676" y1="32" y2="48"/><path d="M 676 28 A 4 4 0 0 0 672 24"/></g><g><line x1="676" x2="676" y1="52" y2="48"/></g><g><line x1="676" x2="676" y1="220" y2="244"/></g><g><line x1="692" x2="688" y1="104" y2="104"/><line marker-end="url(#triangle)" x1="692" x2="692" y1="104" y2="252"/><line x1="692" x2="696" y1="104" y2="104"/><line class="dashed" x1="672" x2="688" y1="104" y2="104"/><line class="dashed" x1="696" x2="720" y1="104" y2="104"/><path d="M 720 104 A 4 4 0 0 0 724 100"/></g><g><line x1="724" x2="724" y1="76" y2="80"/><line class="dashed" x1="724" x2="724" y1="80" y2="96"/><path d="M 724 76 A 4 4 0 0 0 720 72"/></g><g><line x1="724" x2="724" y1="100" y2="96"/></g><g><line x1="724" x2="724" y1="268" y2="292"/></g><g><line class="dashed" x1="16" x2="64" y1="72" y2="72"/></g><g><line class="dashed" x1="64" x2="112" y1="24" y2="24"/></g><g><line class="dashed" x1="112" x2="160" y1="72" y2="72"/></g><g><line class="dashed" x1="160" x2="208" y1="24" y2="24"/></g><g><line class="dashed" x1="208" x2="256" y1="72" y2="72"/></g><g><line class="dashed" x1="376" x2="424" y1="72" y2="72"/></g><g><line class="dashed" x1="424" x2="472" y1="24" y2="24"/></g><g><line class="dashed" x1="472" x2="520" y1="72" y2="72"/></g><g><line class="dashed" x1="472" x2="520" y1="104" y2="104"/></g><g><line class="dashed" x1="576" x2="624" y1="72" y2="72"/></g><g><line class="dashed" x1="576" x2="624" y1="104" y2="104"/></g><g><line class="dashed" x1="624" x2="672" y1="24" y2="24"/></g><g><line class="dashed" x1="672" x2="720" y1="72" y2="72"/></g><g><text x="25" y="92">V1</text></g><g><text x="25" y="284">T1</text></g><g><text x="73" y="44">V4</text></g><g><text x="73" y="236">T4</text></g><g><text x="121" y="92">V2</text></g><g><text x="121" y="284">T2</text></g><g><text x="169" y="44">V5</text></g><g><text x="169" y="236">T5</text></g><g><text x="217" y="92">V3</text></g><g><text x="217" y="284">T3</text></g><g><text x="289" y="76">split</text></g><g><text x="385" y="92">V1</text></g><g><text x="385" y="284">T1</text></g><g><text x="433" y="44">V4</text></g><g><text x="433" y="236">T4</text></g><g><text x="481" y="92">V2</text></g><g><text x="537" y="284">T2</text></g><g><text x="585" y="92">V2&#39;</text></g><g><text x="633" y="44">V5</text></g><g><text x="633" y="236">T5</text></g><g><text x="681" y="92">V3</text></g><g><text x="681" y="284">T3</text></g></svg></div>
+<p>A SSTable is removed when there is no VSSTable referencing it.</p>
+<p>A VSSTable has a key range that is subset of the SSTable it references.</p>
+<pre><code>struct VSSTable {
+    key_start: String,
+    key_end: String,
+    sstable: SSTableId,
+}
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../arch/sstable.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../arch/separate-value.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../arch/sstable.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../arch/separate-value.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>
