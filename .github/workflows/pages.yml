@@ -16,7 +16,7 @@ jobs:
       - name: Install mdbook plugins
         run: |
           cargo install mdbook-linkcheck
-          cargo install --git "https://github.com/lzanini/mdbook-katex"
+          cargo install --git "https://github.com/drmingdrmer/mdbook-katex"
           # Fixed version:
           # 29c3ff1 Fix: the parser has to parse table or the table will be escaped when output
           cargo install --git "https://github.com/drmingdrmer/mdbook-svgbob"

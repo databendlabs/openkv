@@ -5,6 +5,7 @@
 
 - [MemTable](arch/memtable.md)
 - [SSTable](arch/sstable.md)
+- [Virtual SSTable](arch/virtual-sstable.md)
 - [Internal Sharding](arch/sharding.md)
 - [Compaction](arch/compaction.md)
     - [min-hash](arch/min-hash.md)
