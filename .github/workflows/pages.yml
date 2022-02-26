@@ -6,26 +6,16 @@ on:
       - 'doc/**'
       - 'book.toml'
       - 'README.md'
+      - '.github/workflows/**'
 jobs:
   deploy-doc:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
       - name: Install mdbook plugins
-        run: |
-          cargo install mdbook-linkcheck
-          cargo install --git "https://github.com/drmingdrmer/mdbook-katex"
-          # Fixed version:
-          # 29c3ff1 Fix: the parser has to parse table or the table will be escaped when output
-          cargo install --git "https://github.com/drmingdrmer/mdbook-svgbob"
-
-
-      - name: Install mdbook
-        uses: peaceiris/actions-mdbook@v1
-        with:
-          mdbook-version: '0.4.15'
+        uses: drmingdrmer/mdbook-full@main
 
       - name: Build mdbook
         run: mdbook build
